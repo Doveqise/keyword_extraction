@@ -65,7 +65,7 @@ def getKeywords_tfidf(data,stopkey,topK):
         keyword = np.array(word_weight['word']) # 选择词汇列并转成数组格式
         word_split = [keyword[x] for x in range(0,topK)] # 抽取前topK个词汇作为关键词
         word_split = " ".join(word_split)
-        keys.append(word_split.encode("utf-8"))
+        keys.append(word_split)
 
     result = pd.DataFrame({"id": ids, "title": titles, "key": keys},columns=['id','title','key'])
     return result
@@ -76,10 +76,10 @@ def main():
     dataFile = 'data/sample_data.csv'
     data = pd.read_csv(dataFile)
     # 停用词表
-    stopkey = [w.strip() for w in codecs.open('data/stopWord.txt', 'r').readlines()]
+    stopkey = [w.strip() for w in codecs.open('data/stopWord.txt', 'r',encoding="utf_8").readlines()]
     # tf-idf关键词抽取
     result = getKeywords_tfidf(data,stopkey,10)
-    result.to_csv("result/keys_TFIDF.csv",index=False)
+    result.to_csv("result/keys_TFIDF.csv",index=False,encoding="utf_8_sig")
 
 if __name__ == '__main__':
     main()

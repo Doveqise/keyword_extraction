@@ -24,7 +24,7 @@ def getKeywords_textrank(data,topK):
         keywords = jieba.analyse.textrank(text, topK=topK, allowPOS=('n','nz','v','vd','vn','l','a','d'))  # TextRank关键词提取，词性筛选
         word_split = " ".join(keywords)
         print(word_split)
-        keys.append(word_split.encode("utf-8"))
+        keys.append(word_split)
         ids.append(idList[index])
         titles.append(titleList[index])
 
@@ -35,7 +35,7 @@ def main():
     dataFile = 'data/sample_data.csv'
     data = pd.read_csv(dataFile)
     result = getKeywords_textrank(data,10)
-    result.to_csv("result/keys_TextRank.csv",index=False)
+    result.to_csv("result/keys_TextRank.csv", index=False, encoding='utf_8_sig')
 
 if __name__ == '__main__':
     main()
