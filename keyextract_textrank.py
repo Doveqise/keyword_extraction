@@ -4,6 +4,7 @@
 import sys
 import pandas as pd
 import jieba.analyse
+
 """
        TextRank权重：
 
@@ -19,10 +20,10 @@ def getKeywords_textrank(data,topK):
     for index in range(len(idList)):
         text = '%s。%s' % (titleList[index], abstractList[index]) # 拼接标题和摘要
         jieba.analyse.set_stop_words("data/stopWord.txt") # 加载自定义停用词表
-        print "\"",titleList[index],"\"" , " 10 Keywords - TextRank :"
+        print("\"",titleList[index],"\"" , " 10 Keywords - TextRank :")
         keywords = jieba.analyse.textrank(text, topK=topK, allowPOS=('n','nz','v','vd','vn','l','a','d'))  # TextRank关键词提取，词性筛选
         word_split = " ".join(keywords)
-        print word_split
+        print(word_split)
         keys.append(word_split.encode("utf-8"))
         ids.append(idList[index])
         titles.append(titleList[index])

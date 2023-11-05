@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=utf-8
 # 采用Word2Vec词聚类方法抽取关键词1——获取文本词向量表示
 import warnings
@@ -17,14 +17,16 @@ def getWordVecs(wordList, model):
     for word in wordList:
         word = word.replace('\n', '')
         try:
-            if word in model:  # 模型中存在该词的向量表示
-                name.append(word.encode('utf8'))
+            # 检查模型中是否存在该词的向量表示
+            if word in model:
+                name.append(word)  # 直接添加中文词
                 vecs.append(model[word])
         except KeyError:
             continue
     a = pd.DataFrame(name, columns=['word'])
     b = pd.DataFrame(np.array(vecs, dtype='float'))
     return pd.concat([a, b], axis=1)
+
 
 # 数据预处理操作：分词，去停用词，词性筛选
 def dataPrepos(text, stopkey):
@@ -53,14 +55,14 @@ def buildAllWordsVecs(data, stopkey, model):
         # 词向量写入csv文件，每个词400维
         data_vecs = pd.DataFrame(wordvecs)
         data_vecs.to_csv('result/vecs/wordvecs_' + str(id) + '.csv', index=False)
-        print "document ", id, " well done."
+        print("document ", id, " well done.")
 
 def main():
     # 读取数据集
     dataFile = 'data/sample_data.csv'
     data = pd.read_csv(dataFile)
     # 停用词表
-    stopkey = [w.strip() for w in codecs.open('data/stopWord.txt', 'r').readlines()]
+    stopkey = [w.strip() for w in open('data/stopWord.txt', 'r', encoding='utf-8').readlines()]
     # 词向量模型
     inp = 'wiki.zh.text.vector'
     model = gensim.models.KeyedVectors.load_word2vec_format(inp, binary=False)
